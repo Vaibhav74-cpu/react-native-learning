@@ -1,5 +1,14 @@
 import { useState } from "react";
-import { Button, StyleSheet, Text, TextInput, View } from "react-native";
+import {
+  Button,
+  FlatList,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from "react-native";
+import GoalItem from "./components/GoalItem";
 
 export default function App() {
   const [enteredGoal, setEnteredGoal] = useState("");
@@ -9,7 +18,14 @@ export default function App() {
   }
   function goalAddHandler() {
     // setCourseGoals({ ...courseGoals, enteredGoal });
-    setCourseGoals((currentGoals) => [...currentGoals, enteredGoal]);
+    setCourseGoals((currentGoals) => [
+      ...currentGoals,
+      {
+        text: enteredGoal,
+        id: Math.random().toString(),
+        // key: Math.random().toString()
+      },
+    ]);
   }
   return (
     <View style={styles.appConatainer}>
@@ -24,19 +40,41 @@ export default function App() {
       <Text style={styles.japanText}>welcome to japan</Text>
       <Button title="tap me" /> */}
 
+      {/* *************************************** TEXT INPUT  AND BUTTON ******************************/}
       <View style={styles.inputContainer}>
         <TextInput
           style={styles.textInput}
           placeholder="Enter your goals"
           onChangeText={goalInputHandler}
         />
+
         <Button title="Add goal" onPress={goalAddHandler} />
       </View>
+
+      {/* *****************************************  FLATLIST ***************************** */}
       <View style={styles.goalShow}>
-        {courseGoals.map((goal) => (
-          <Text key={goal}>{goal}</Text>
-        ))}
+        <FlatList
+          data={courseGoals}
+          renderItem={(itemData) => {
+            return <GoalItem text={itemData.item.text} />;
+          }}
+          keyExtractor={(item, index) => {
+            return item.id;
+          }}
+          alwaysBounceVertical={false}
+        />
       </View>
+
+      {/* ********************************************** SCROLLVIEW ************************ */}
+      {/* <View style={styles.goalShow}>
+        <ScrollView>
+          {courseGoals.map((goal) => (
+            <View style={styles.goalItem} key={goal}>
+              <Text style={styles.goalText}>{goal.text}</Text>
+            </View>
+          ))}
+        </ScrollView>
+      </View> */}
 
       {/* flexbox */}
       {/* <View
@@ -134,7 +172,7 @@ const styles = StyleSheet.create({
   textInput: {
     width: "70%",
     borderWidth: 2,
-    borderColor: "#cb5252cc",
+    borderColor: "#ae3232cc",
     marginRight: 8,
     padding: 8,
   },
@@ -143,3 +181,16 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
 });
+
+/*
+text styling
+<Text style={{
+  fontFamily: 'Roboto',      // Text-specific
+  fontWeight: 'bold',        // Text-specific
+  fontSize: 16,              // Text-specific
+  lineHeight: 24,            // Text-specific
+  letterSpacing: 0.5,        // Text-specific
+  textAlign: 'center',       // Text-specific
+  textDecorationLine: 'underline' // Text-specific
+}}>
+*/
