@@ -22,11 +22,11 @@ export default StartGameScreen;
 
 const styles = StyleSheet.create({
   inputContainer: {
-    backgroundColor: "#231b59",
+    backgroundColor: "#0d0736",
     padding: 16,
     marginTop: 100,
     marginHorizontal: 20,
-    borderRadius: 6,
+    borderRadius: 10,
     elevation: 5, //only works in android
 
     //below property only works in ios
