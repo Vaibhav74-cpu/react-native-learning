@@ -1,10 +1,13 @@
-import { Alert, StyleSheet, Text, View } from "react-native";
+import { Alert, FlatList, StyleSheet, Text, View } from "react-native";
 import Title from "../components/Title";
 import NumberContainer from "../components/game/NumberContainer";
 import { useEffect, useState } from "react";
 import PrimaryButton from "../components/PrimaryButton";
 import Card from "../components/Card";
 import TextInstruction from "../components/TextInstruction";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import Colors from "../constants/colors";
+import GuessLogItems from "../components/GuessLogItems";
 
 const generateRandomBetween = (min, max, exclude) => {
   const randomNum = Math.floor(Math.random() * (max - min)) + min;
@@ -20,17 +23,26 @@ let minBoundary = 1;
 let maxBoundary = 100;
 
 function GameScreen({ userNumber, onGameOver }) {
-  console.log("usernumber", userNumber);
+  // console.log("usernumber", userNumber);
 
   const initialGuess = generateRandomBetween(1, 100, userNumber);
   const [currentComputerGuess, setCurrentComputerGuess] =
     useState(initialGuess);
+  const [hint, setHint] = useState("");
+
+  const [guessRounds, setGuessRounds] = useState([initialGuess]);
+  const guessRoundListLength = guessRounds.length;
+  // console.log(guessRounds.length);
 
   useEffect(() => {
     if (currentComputerGuess === userNumber) {
-      onGameOver();
+      onGameOver(guessRounds.length);
     }
   }, [userNumber, currentComputerGuess, onGameOver]);
+
+  useEffect(() => {
+    ((maxBoundary = 100), (minBoundary = 1));
+  }, []);
 
   const nextNumberGuessHandler = (direction) => {
     if (
@@ -40,8 +52,10 @@ function GameScreen({ userNumber, onGameOver }) {
       Alert.alert("Dont lie!", "you know this is wrong", [
         { text: "Sorry", style: "cancel" },
       ]);
+      setHint("");
       return;
     }
+
     if (direction === "lower") {
       maxBoundary = currentComputerGuess;
     } else {
@@ -53,13 +67,23 @@ function GameScreen({ userNumber, onGameOver }) {
       currentComputerGuess,
     );
     setCurrentComputerGuess(newRandomNumber);
-    console.log("new guess", newRandomNumber);
+    setGuessRounds((previousGuess) => [newRandomNumber, ...previousGuess]);
+    // console.log("new guess", newRandomNumber);
+
+    if (newRandomNumber > userNumber) {
+      setHint("Too high! ");
+    } else if (newRandomNumber < userNumber) {
+      setHint("Too low! ");
+    } else {
+      setHint("");
+    }
   };
 
   return (
     <View style={styles.screen}>
       <Title>Opponent's Guess</Title>
       <NumberContainer>{currentComputerGuess}</NumberContainer>
+      <Title>{hint}</Title>
       <Card>
         <TextInstruction style={styles.instructionText}>
           Higher or Lower
@@ -67,19 +91,36 @@ function GameScreen({ userNumber, onGameOver }) {
         <View style={styles.controlButtons}>
           <View style={styles.controlButton}>
             <PrimaryButton onPress={nextNumberGuessHandler.bind(this, "lower")}>
-              -
+              <Ionicons name="remove" size={24} color="white" />
             </PrimaryButton>
           </View>
           <View style={styles.controlButton}>
             <PrimaryButton
               onPress={nextNumberGuessHandler.bind(this, "greater")}
             >
-              +
+              <Ionicons name="add" size={24} color="white" />
             </PrimaryButton>
           </View>
         </View>
       </Card>
-      <View>{/* Rounds */}</View>
+      <View style={styles.listContainer}>
+        {/* {guessRounds.map((guessRound) => (
+          <Text key={guessRound} style={styles.guessText}>
+            {guessRound}
+          </Text>
+        ))} */}
+
+        <FlatList
+          data={guessRounds}
+          renderItem={(itemData) => (
+            <GuessLogItems
+              roundNumber={guessRoundListLength - itemData.index}
+              guess={itemData.item}
+            />
+          )}
+          keyExtractor={(item) => item}
+        />
+      </View>
     </View>
   );
 }
@@ -87,6 +128,13 @@ function GameScreen({ userNumber, onGameOver }) {
 export default GameScreen;
 
 const styles = StyleSheet.create({
+  listContainer: {
+    padding: 6,
+    flex: 1,
+  },
+  guessText: {
+    textAlign: "center",
+  },
   screen: {
     flex: 1,
     padding: 24,

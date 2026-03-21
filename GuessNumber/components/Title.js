@@ -1,4 +1,3 @@
-
 import { StyleSheet, Text } from "react-native";
 import Colors from "../constants/colors";
 
@@ -10,6 +9,7 @@ export default Title;
 
 const styles = StyleSheet.create({
   title: {
+    // fontFamily: "open-sans-semi-bold",
     fontSize: 26,
     fontWeight: "bold",
     textAlign: "center",
