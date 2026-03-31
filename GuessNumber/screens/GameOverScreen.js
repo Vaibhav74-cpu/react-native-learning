@@ -1,13 +1,41 @@
-import { Image, StyleSheet, Text, View } from "react-native";
-import Title from "../components/Title";
+import {
+  Dimensions,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  useWindowDimensions,
+  View,
+} from "react-native";
+import Title from "../components/Title.android";
 import Colors from "../constants/colors";
 import PrimaryButton from "../components/PrimaryButton";
 
 function GameOverScreen({ userNumber, guessRounds, onStartNewGame }) {
+  const { width, height } = useWindowDimensions();
+  console.log(width, height);
+
+  let imageSize = 350;
+
+  if (width < 380) {
+    imageSize = 150;
+  }
+  if (height < 400) {
+    imageSize = 150;
+  }
+
+  let imageStyle = {
+    width: imageSize,
+    height: imageSize,
+    borderRadius: imageSize / 2,
+  };
+
   return (
+    // <ScrollView style={styles.screen}>
+    //       </ScrollView>
     <View style={styles.rootContainer}>
       <Title>GAME OVER!</Title>
-      <View style={styles.imageContainer}>
+      <View style={[styles.imageContainer, imageStyle]}>
         <Image
           source={require("../assets/images/goalAchieved.jpg")}
           style={styles.image}
@@ -25,7 +53,11 @@ function GameOverScreen({ userNumber, guessRounds, onStartNewGame }) {
 
 export default GameOverScreen;
 
+const deviceWidth = Dimensions.get("window").width;
+// console.log(deviceWidth);
+
 const styles = StyleSheet.create({
+  screen: { flex: 1 },
   rootContainer: {
     flex: 1,
     padding: 24,
@@ -37,16 +69,16 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   imageContainer: {
-    height: 350,
-    width: 350,
-    borderRadius: 175,
+    // height: deviceWidth < 370 ? 250 : 350,
+    // width: deviceWidth < 370 ? 250 : 350,
+    // borderRadius: deviceWidth < 370 ? 125 : 175,
     borderWidth: 3,
     margin: 30,
     overflow: "hidden",
     borderColor: "black",
   },
   guessSummary: {
-    fontSize: 25,
+    fontSize: deviceWidth < 380 ? 10 : 25,
     textAlign: "center",
     marginBottom: 20,
   },

@@ -1,5 +1,6 @@
-import { ImageBackground, StyleSheet } from "react-native";
+// ****************** topics:  components , layout , styling , make adaptive and responsive ui -  learning through this app *********************************************
 
+import { ImageBackground, StyleSheet } from "react-native";
 import StartGameScreen from "./screens/StartGameScreen";
 import GameOverScreen from "./screens/GameOverScreen";
 import { LinearGradient } from "expo-linear-gradient";
@@ -8,6 +9,7 @@ import GameScreen from "./screens/GameScreen";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useFonts } from "expo-font";
 import AppLoading from "expo-app-loading";
+import { StatusBar } from "expo-status-bar";
 
 export default function App() {
   const [userNumber, setUserNumber] = useState();
@@ -56,16 +58,22 @@ export default function App() {
     );
   }
   return (
-    <LinearGradient colors={["#1e107b", "#c9a11e"]} style={styles.screenLayout}>
-      <ImageBackground
-        source={require("./assets/ddice.jpg")}
+    <>
+      <StatusBar style='light' />
+      <LinearGradient
+        colors={["#1e107b", "#c9a11e"]}
         style={styles.screenLayout}
-        imageStyle={styles.screenImage}
-        resizeMode="cover"
       >
-        <SafeAreaView style={styles.screenLayout}>{screen}</SafeAreaView>
-      </ImageBackground>
-    </LinearGradient>
+        <ImageBackground
+          source={require("./assets/ddice.jpg")}
+          style={styles.screenLayout}
+          imageStyle={styles.screenImage}
+          resizeMode="cover"
+        >
+          <SafeAreaView style={styles.screenLayout}>{screen}</SafeAreaView>
+        </ImageBackground>
+      </LinearGradient>
+    </>
   );
 }
 

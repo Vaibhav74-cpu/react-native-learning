@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, Dimensions } from "react-native";
 import Colors from "../../constants/colors";
 
 function NumberContainer({ children }) {
@@ -11,18 +11,21 @@ function NumberContainer({ children }) {
 
 export default NumberContainer;
 
+const deviceWidth = Dimensions.get("window").width;
+
+
 const styles = StyleSheet.create({
   guessContainer: {
     borderColor: Colors.yellow600,
     borderWidth: 4,
-    padding: 24,
+    padding: deviceWidth < 370 ? 14 : 24,
+    margin: deviceWidth < 370 ? 14 : 24,
     borderRadius: 12,
     alignItems: "center",
     justifyContent: "center",
-    margin: 24,
   },
   numberText: {
-    fontSize: 34,
+    fontSize: deviceWidth < 370 ? 30 : 34,
     fontFamily: "open-sans-semi-bold",
     // fontWeight: "bold",
     color: Colors.yellow600,
