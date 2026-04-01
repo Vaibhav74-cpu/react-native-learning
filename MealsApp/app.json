@@ -4,6 +4,7 @@
     "slug": "MealsApp",
     "version": "1.0.0",
     "orientation": "portrait",
+    "backgroundColor": "#301406",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
