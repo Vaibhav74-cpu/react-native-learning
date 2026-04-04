@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import {
   Image,
@@ -8,12 +9,18 @@ import {
   View,
 } from "react-native";
 
-function MealItem({ title, imageUrl, duration, complexity, affordablity }) {
+function MealItem({ id, title, imageUrl, duration, complexity, affordablity }) {
+  const navigation = useNavigation();
+
+  function mealScreenHandler() {
+    navigation.navigate("MealDetails", { mealId: id }); // mealId go to the meal details screen
+  }
   return (
     <View style={styles.outerContainer}>
       <Pressable
         android_ripple={{ color: "#ccc" }}
         style={({ pressed }) => (pressed ? styles.buttonPressed : null)}
+        onPress={mealScreenHandler}
       >
         <View style={styles.innerContainer}>
           <View>
@@ -61,7 +68,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: 8,
   },
-
   detailsMeal: {
     flexDirection: "row",
     alignItems: "center",
