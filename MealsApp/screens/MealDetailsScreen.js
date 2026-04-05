@@ -11,19 +11,27 @@ import {
 } from "react-native";
 import { MEALS } from "../data/dummyData";
 import List from "../components/List";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import SubTitle from "../components/SubTitle";
 import IconButton from "../components/IconButton";
+import { FavouriteContext } from "../store/context/Favourite-context";
 
 function MealDetailsScreen({ route }) {
   //   const route = useRoute();
+  const favouriteCxtIds = useContext(FavouriteContext);
   const navigation = useNavigation();
   const mealId = route.params.mealId;
 
   const selectedMeal = MEALS.find((meal) => meal.id === mealId);
 
+  const mealIsFav = favouriteCxtIds.ids.includes(mealId); //check the coming mealid is present on ids array
+
   function FavouritesHandler() {
-    console.log("pressed fav");
+    if (mealIsFav) {
+      favouriteCxtIds.removeFavourite(mealId);
+    } else {
+      favouriteCxtIds.addFavourite(mealId);
+    }
   }
 
   useEffect(() => {
@@ -34,12 +42,12 @@ function MealDetailsScreen({ route }) {
             onPress={FavouritesHandler}
             size={24}
             color="white"
-            icon="star"
+            icon={mealIsFav ? "star" : "star-outline"}
           />
         );
       },
     });
-  }, []);
+  }, [FavouritesHandler, navigation]);
 
   return (
     <ScrollView>

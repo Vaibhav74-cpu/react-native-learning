@@ -1,4 +1,4 @@
-// *********************************** module : navigation- stack, drawer, tabs *********************************************
+// *********************************** module : navigation- stack, drawer, tabs context , redux toolkit *********************************************
 import "react-native-reanimated";
 import "react-native-gesture-handler";
 
@@ -12,6 +12,9 @@ import CategoriesScreen from "./screens/CategoriesScreen";
 import MealsOverviewScreen from "./screens/MealsOverviewScreen";
 import MealDetailsScreen from "./screens/MealDetailsScreen";
 import FavouriteScreen from "./screens/FavouriteScreen";
+// import FavouriteContextProvider from "./store/context/Favourite-context";
+import { Provider } from "react-redux";
+import { store } from "./store/redux/store";
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -57,40 +60,44 @@ export default function App() {
   return (
     <>
       <StatusBar style="light" />
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{
-            headerStyle: { backgroundColor: "#371010" },
-            headerTintColor: "white",
-            contentStyle: { backgroundColor: "#372f2f" },
-          }}
-        >
-          <Stack.Screen
-            name="MealsCategories"
-            component={DrawerNavigator}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="MealsOverview"
-            component={MealsOverviewScreen}
-            // options={({ navigation, route }) => {
-            //   const catId = route.params.categoryId;
-            //   return {
-            //     title: catId,  // BAD APPROACH FOR SHOWING SCREEN NAME
-            //   };
-            // }}
-          />
-          <Stack.Screen
-            name="MealDetails"
-            component={MealDetailsScreen}
-            // options={{
-            //   headerRight: () => {
-            //     return <Button title="Tap Me" onPress={pressHandler} />;
-            //   },
-            // }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+      {/* <FavouriteContextProvider> */}
+      <Provider store={store}>
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{
+              headerStyle: { backgroundColor: "#371010" },
+              headerTintColor: "white",
+              contentStyle: { backgroundColor: "#372f2f" },
+            }}
+          >
+            <Stack.Screen
+              name="MealsCategories"
+              component={DrawerNavigator}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="MealsOverview"
+              component={MealsOverviewScreen}
+              // options={({ navigation, route }) => {
+              //   const catId = route.params.categoryId;
+              //   return {
+              //     title: catId,  // BAD APPROACH FOR SHOWING SCREEN NAME
+              //   };
+              // }}
+            />
+            <Stack.Screen
+              name="MealDetails"
+              component={MealDetailsScreen}
+              // options={{
+              //   headerRight: () => {
+              //     return <Button title="Tap Me" onPress={pressHandler} />;
+              //   },
+              // }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </Provider>
+      {/* </FavouriteContextProvider> */}
     </>
   );
 }
