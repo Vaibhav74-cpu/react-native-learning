@@ -5,6 +5,7 @@ function renderExpensesHandler(itemdata) {
   const item = itemdata.item;
   return (
     <ExpenseItem
+      id={item.id}
       description={item.description}
       amount={item.amount}
       date={item.date}
