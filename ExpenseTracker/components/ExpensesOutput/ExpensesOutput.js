@@ -40,6 +40,7 @@ function ExpensesOutput({ expenses, expensesPeriod }) {
       amount: 150,
       date: new Date(2024, 1, 18),
     },
+    
   ];
 
   return (

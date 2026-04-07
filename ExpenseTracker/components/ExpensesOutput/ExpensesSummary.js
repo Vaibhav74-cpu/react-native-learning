@@ -23,11 +23,13 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     backgroundColor: "#ffebc3",
     padding: 8,
+    marginBottom: 8,
+    paddingHorizontal: 14,
   },
   period: {
     fontSize: 14,
     color: "#381687",
-    fontWeight:'700'
+    fontWeight: "700",
   },
   sumField: {
     fontWeight: "bold",

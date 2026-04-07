@@ -9,6 +9,7 @@ import { StatusBar } from "expo-status-bar";
 import ManageExpenseScreen from "./screens/ManageExpenseScreen";
 import AllExpensesScreen from "./screens/AllExpensesScreen";
 import RecentExpenseScreen from "./screens/RecentExpenseScreen";
+import IconButton from "./util/IconButton";
 
 const Stack = createStackNavigator();
 const BottomTab = createBottomTabNavigator();
@@ -22,6 +23,16 @@ function ExpenseOverview() {
         tabBarStyle: { backgroundColor: "#3b09b1" },
         tabBarActiveTintColor: "#ffdb64",
         tabBarActiveBackgroundColor: "#3a0ea2",
+        headerRight: ({ tintColor }) => (
+          <IconButton
+            icon="add"
+            size={24}
+            color={tintColor}
+            onPress={() => {
+              console.log("press");
+            }}
+          />
+        ),
       }}
     >
       <BottomTab.Screen
