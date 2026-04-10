@@ -50,7 +50,7 @@ function expenseReducer(state, action) {
   switch (action.type) {
     case "Add":
       const id = new Date().toString() + Math.random().toString();
-      return [{ ...action.payload, id: id }, ...state]; //add (data+id) + keep old data
+      return [{ ...action.payload, id: id }, ...state]; //add (data+id) + keep old data and then retun to the origin function
     case "Update":
       const updateExpenseIndex = state.findIndex(
         (expense) => expense.id === action.payload.id, //find which expens need to update

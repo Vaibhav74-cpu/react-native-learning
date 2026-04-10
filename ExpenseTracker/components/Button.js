@@ -23,11 +23,15 @@ const styles = StyleSheet.create({
   button: {
     padding: 8,
     borderRadius: 6,
-    backgroundColor: "#5515e9",
+    backgroundColor: "#5a21de",
+    marginHorizontal: 50,
+    minWidth: "30%",
   },
   buttonText: {
     color: "white",
     textAlign: "center",
+    fontSize: 16,
+    fontWeight: "semibold",
   },
   flat: { backgroundColor: "transparent" },
   pressed: {
