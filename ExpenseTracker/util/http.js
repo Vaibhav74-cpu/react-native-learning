@@ -2,12 +2,14 @@ import axios from "axios";
 
 const BASE_URL = "https://expense-eeadc-default-rtdb.firebaseio.com";
 export async function storeExpense(expenseData) {
-  await axios.post(`${BASE_URL}/expenses.json`, expenseData);
+  const response = await axios.post(`${BASE_URL}/expenses.json`, expenseData);
+  const id = response.data.name;
+  return id;
 }
 
 export async function fetchExpenses() {
   const response = await axios.get(`${BASE_URL}/expenses.json`);
-//   console.log(response.data);
+  //   console.log(response.data);
 
   const expenses = [];
   for (const key in response.data) {
@@ -17,9 +19,15 @@ export async function fetchExpenses() {
       date: new Date(response.data[key].date),
       description: response.data[key].description,
     };
-    
 
     expenses.push(expenseObj);
   }
   return expenses;
+}
+export async function updateExpense(id, expenseData) {
+  await axios.put(`${BASE_URL}/expenses/${id}.json`, expenseData);
+}
+
+export async function deleteeExpense(id) {
+  await axios.delete(`${BASE_URL}/expenses/${id}.json`);
 }
