@@ -5,6 +5,7 @@ import IconButton from "../util/IconButton";
 
 import { ExpenseContext } from "../store/Expense-context";
 import ExpenseForm from "../components/ExpenseForm";
+import { storeExpense } from "../util/http";
 
 function ManageExpenseScreen() {
   const navigation = useNavigation();
@@ -31,6 +32,7 @@ function ManageExpenseScreen() {
     if (isExpenseId) {
       expenseCtx.updateExpense(expenseEditedId, expenseData);
     } else {
+      storeExpense(expenseData);
       expenseCtx.addExpense(expenseData);
     }
     navigation.goBack();
