@@ -1,13 +1,17 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { useContext, useLayoutEffect } from "react";
+import { useContext, useLayoutEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import IconButton from "../util/IconButton";
 
 import { ExpenseContext } from "../store/Expense-context";
 import ExpenseForm from "../components/ExpenseForm";
 import { deleteeExpense, storeExpense, updateExpense } from "../util/http";
+import LoadingOverlay from "../components/LoadingOverlay";
+import ErrorOverlay from "../components/ErrorOverlay";
 
 function ManageExpenseScreen() {
+  const [error, setError] = useState();
+  const [isSubmiting, setIsSubmiting] = useState(false);
   const navigation = useNavigation();
   const route = useRoute();
   const expenseCtx = useContext(ExpenseContext);
@@ -29,20 +33,40 @@ function ManageExpenseScreen() {
   }
 
   async function confirmHandler(expenseData) {
-    if (isExpenseId) {
-      expenseCtx.updateExpense(expenseEditedId, expenseData);
-      await updateExpense(expenseEditedId, expenseData);
-    } else {
-      const id = await storeExpense(expenseData);
-      expenseCtx.addExpense({ ...expenseData, id: id });
+    setIsSubmiting(true);
+    try {
+      if (isExpenseId) {
+        expenseCtx.updateExpense(expenseEditedId, expenseData);
+        await updateExpense(expenseEditedId, expenseData);
+      } else {
+        const id = await storeExpense(expenseData);
+        expenseCtx.addExpense({ ...expenseData, id: id });
+      }
+      navigation.goBack();
+    } catch (error) {
+      setError("could not update data- try again");
+      setIsSubmiting(false);
     }
-    navigation.goBack();
   }
 
   async function deleteHandler() {
-    await deleteeExpense(expenseEditedId);
-    expenseCtx.deleteExpense(expenseEditedId); //call from context
-    navigation.goBack();
+    setIsSubmiting(true);
+    try {
+      await deleteeExpense(expenseEditedId);
+      expenseCtx.deleteExpense(expenseEditedId); //call from context
+      navigation.goBack();
+    } catch (error) {
+      setError("could not delete- try again");
+      setIsSubmiting(false);
+    }
+  }
+
+  if (error && !isSubmiting) {
+    <ErrorOverlay message={error} />;
+  }
+
+  if (isSubmiting) {
+    <LoadingOverlay />;
   }
   return (
     <View style={styles.container}>
